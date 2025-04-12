@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>What to Eat? 🍜</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #1e1e1e;
+      background: linear-gradient(to bottom, #2c3e50, #1e1e1e);
       color: #fff;
       text-align: center;
+      min-height: 100vh;
     }
     h1 {
       margin-top: 2rem;
       color: #ffcd3c;
+      font-size: 2.5rem;
     }
     .filters, .buttons {
       margin: 1.5rem 0;
@@ -28,11 +30,13 @@
       font-size: 1rem;
     }
     select {
-      background-color: #333;
+      background-color: #444;
       color: #fff;
     }
     button {
       background-color: #ffcd3c;
+      color: #1e1e1e;
+      font-weight: bold;
       cursor: pointer;
       transition: 0.2s;
     }
@@ -43,11 +47,19 @@
       font-size: 2rem;
       margin-top: 2rem;
       color: #76ff03;
+      animation: pop 0.3s ease-in-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.8); }
+      100% { transform: scale(1); }
     }
     .liked {
       color: #ff4081;
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin-top: 1rem;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -72,7 +84,7 @@
   </div>
 
   <div class="buttons">
-    <button onclick="suggestFood()">🎲 Suggest Something</button>
+    <button onclick="suggestFood()">🎲 Suggest</button>
     <button onclick="likeDish()">❤️ Like</button>
     <button onclick="skipDish()">⏭️ Skip</button>
   </div>
@@ -82,16 +94,30 @@
 
   <script>
     const foodData = [
-      { name: 'Paneer Butter Masala', type: 'veg', budget: 'mid' },
-      { name: 'Chicken Biryani', type: 'nonveg', budget: 'mid' },
-      { name: 'Maggi', type: 'veg', budget: 'low' },
-      { name: 'Grilled Sandwich', type: 'veg', budget: 'low' },
-      { name: 'Shawarma Roll', type: 'nonveg', budget: 'low' },
-      { name: 'Pizza', type: 'veg', budget: 'high' },
-      { name: 'Mutton Rogan Josh', type: 'nonveg', budget: 'high' },
-      { name: 'Idli Sambar', type: 'veg', budget: 'low' },
-      { name: 'Fried Rice', type: 'veg', budget: 'mid' },
-      { name: 'Fish Curry', type: 'nonveg', budget: 'mid' },
+      // Veg
+      { name: '🍛 Paneer Butter Masala', type: 'veg', budget: 'mid' },
+      { name: '🥪 Grilled Sandwich', type: 'veg', budget: 'low' },
+      { name: '🍜 Maggi', type: 'veg', budget: 'low' },
+      { name: '🥗 Buddha Bowl', type: 'veg', budget: 'high' },
+      { name: '🍕 Veg Pizza', type: 'veg', budget: 'high' },
+      { name: '🍚 Fried Rice', type: 'veg', budget: 'mid' },
+      { name: '🍥 Idli Sambar', type: 'veg', budget: 'low' },
+      { name: '🥔 Masala Dosa', type: 'veg', budget: 'mid' },
+
+      // Non-Veg
+      { name: '🍗 Chicken Biryani', type: 'nonveg', budget: 'mid' },
+      { name: '🌯 Shawarma Roll', type: 'nonveg', budget: 'low' },
+      { name: '🥘 Mutton Rogan Josh', type: 'nonveg', budget: 'high' },
+      { name: '🐟 Fish Curry', type: 'nonveg', budget: 'mid' },
+      { name: '🍖 Kebab Platter', type: 'nonveg', budget: 'high' },
+
+      // Snacks & Desserts
+      { name: '🍟 Fries & Cheese Dip', type: 'veg', budget: 'low' },
+      { name: '🍩 Donut', type: 'veg', budget: 'low' },
+      { name: '🍦 Ice Cream Sundae', type: 'veg', budget: 'mid' },
+      { name: '🍰 Cheesecake', type: 'veg', budget: 'mid' },
+      { name: '🍫 Chocolate Brownie', type: 'veg', budget: 'low' },
+      { name: '🧋 Bubble Tea', type: 'veg', budget: 'mid' },
     ];
 
     let currentDish = null;
@@ -106,7 +132,7 @@
       });
 
       if (filtered.length === 0) {
-        document.getElementById('suggestion').innerText = "No matching food found! 😢";
+        document.getElementById('suggestion').innerText = "No match! 😢 Try different filters.";
         return;
       }
 
@@ -128,10 +154,9 @@
 
     function showLiked() {
       let liked = JSON.parse(localStorage.getItem('likedDishes')) || [];
-      document.getElementById('likedDishes').innerText = liked.length ? `Liked: ${liked.join(', ')}` : '';
+      document.getElementById('likedDishes').innerText = liked.length ? `❤️ Liked: ${liked.join(', ')}` : '';
     }
 
-    // Show liked dishes on load
     showLiked();
   </script>
 </body>

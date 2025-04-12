@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What to Eat? 🍜</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #1e1e1e;
+      color: #fff;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 2rem;
+      color: #ffcd3c;
+    }
+    .filters, .buttons {
+      margin: 1.5rem 0;
+    }
+    select, button {
+      padding: 10px 20px;
+      margin: 0.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    select {
+      background-color: #333;
+      color: #fff;
+    }
+    button {
+      background-color: #ffcd3c;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #ffc107;
+    }
+    .result {
+      font-size: 2rem;
+      margin-top: 2rem;
+      color: #76ff03;
+    }
+    .liked {
+      color: #ff4081;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>What Should I Eat? 🍽️</h1>
+
+  <div class="filters">
+    <label for="type">Type:</label>
+    <select id="type">
+      <option value="any">Any</option>
+      <option value="veg">Veg</option>
+      <option value="nonveg">Non-Veg</option>
+    </select>
+
+    <label for="budget">Budget:</label>
+    <select id="budget">
+      <option value="any">Any</option>
+      <option value="low">Low (₹)</option>
+      <option value="mid">Medium (₹₹)</option>
+      <option value="high">Fancy (₹₹₹)</option>
+    </select>
+  </div>
+
+  <div class="buttons">
+    <button onclick="suggestFood()">🎲 Suggest Something</button>
+    <button onclick="likeDish()">❤️ Like</button>
+    <button onclick="skipDish()">⏭️ Skip</button>
+  </div>
+
+  <div class="result" id="suggestion">Ready to find your meal? 😋</div>
+  <div class="liked" id="likedDishes"></div>
+
+  <script>
+    const foodData = [
+      { name: 'Paneer Butter Masala', type: 'veg', budget: 'mid' },
+      { name: 'Chicken Biryani', type: 'nonveg', budget: 'mid' },
+      { name: 'Maggi', type: 'veg', budget: 'low' },
+      { name: 'Grilled Sandwich', type: 'veg', budget: 'low' },
+      { name: 'Shawarma Roll', type: 'nonveg', budget: 'low' },
+      { name: 'Pizza', type: 'veg', budget: 'high' },
+      { name: 'Mutton Rogan Josh', type: 'nonveg', budget: 'high' },
+      { name: 'Idli Sambar', type: 'veg', budget: 'low' },
+      { name: 'Fried Rice', type: 'veg', budget: 'mid' },
+      { name: 'Fish Curry', type: 'nonveg', budget: 'mid' },
+    ];
+
+    let currentDish = null;
+
+    function suggestFood() {
+      const type = document.getElementById('type').value;
+      const budget = document.getElementById('budget').value;
+
+      const filtered = foodData.filter(food => {
+        return (type === 'any' || food.type === type) &&
+               (budget === 'any' || food.budget === budget);
+      });
+
+      if (filtered.length === 0) {
+        document.getElementById('suggestion').innerText = "No matching food found! 😢";
+        return;
+      }
+
+      currentDish = filtered[Math.floor(Math.random() * filtered.length)];
+      document.getElementById('suggestion').innerText = `${currentDish.name}`;
+    }
+
+    function likeDish() {
+      if (!currentDish) return;
+      let liked = JSON.parse(localStorage.getItem('likedDishes')) || [];
+      liked.push(currentDish.name);
+      localStorage.setItem('likedDishes', JSON.stringify([...new Set(liked)]));
+      showLiked();
+    }
+
+    function skipDish() {
+      suggestFood();
+    }
+
+    function showLiked() {
+      let liked = JSON.parse(localStorage.getItem('likedDishes')) || [];
+      document.getElementById('likedDishes').innerText = liked.length ? `Liked: ${liked.join(', ')}` : '';
+    }
+
+    // Show liked dishes on load
+    showLiked();
+  </script>
+</body>
+</html>

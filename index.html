@@ -1,48 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>What to Eat? 🍜</title>
   <style>
-    /* Global Styles */
     body {
-      <img id="foodImage" src="" alt="Food Image" style="max-width: 300px; margin-top: 20px; display: none; border-radius: 12px;">
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e1e1e, #2e2e2e);
       color: #fff;
       text-align: center;
-      background: linear-gradient(45deg, #ff6f61, #f3a847, #6a1b9a, #4caf50);
-      background-size: 400% 400%;
-      animation: gradientAnimation 15s ease infinite;
-      transition: background-color 0.3s, color 0.3s;
-      min-height: 100vh;
     }
-
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     h1 {
       margin-top: 2rem;
-      color: #fff;
-      font-size: 3rem;
-      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      color: #ffcd3c;
     }
-
-    /* Dark Mode */
-    body.dark-mode {
-      background-color: #121212;
-      color: #fff;
-    }
-
-    /* Filters */
-    .filters {
+    .filters, .buttons {
       margin: 1.5rem 0;
-      font-size: 1.1rem;
     }
     select, button {
       padding: 10px 20px;
@@ -55,80 +31,42 @@
       background-color: #333;
       color: #fff;
     }
-
     button {
       background-color: #ffcd3c;
       cursor: pointer;
       transition: 0.2s;
     }
-
     button:hover {
       background-color: #ffc107;
     }
-
-    /* Food Image & Result */
-    .food-image-container {
-      margin-top: 2rem;
-    }
-
-    .food-image {
-      width: 100%;
-      height: auto;
-      max-width: 500px;
-      margin: 0 auto;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-    }
-
     .result {
       font-size: 2rem;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
       color: #76ff03;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .liked {
       color: #ff4081;
       font-size: 1.2rem;
       margin-top: 1rem;
     }
-
-    /* Dark Mode Button */
-    #toggleMode {
-      background-color: #333;
-      color: #fff;
-      border-radius: 5px;
-      border: none;
-      padding: 10px 20px;
+    img#foodImage {
+      max-width: 300px;
+      border-radius: 12px;
+      margin-top: 20px;
+      display: none;
+    }
+    .recipe {
       margin-top: 1rem;
-      cursor: pointer;
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    /* Button for showing Recipe */
-    .recipe-button {
-      background-color: #76ff03;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin-top: 1rem;
-      cursor: pointer;
-    }
-
-    .recipe-button:hover {
-      background-color: #4caf50;
-    }
-
   </style>
 </head>
 <body>
   <h1>What Should I Eat? 🍽️</h1>
-
-  <!-- Dark Mode Toggle -->
-  <button id="toggleMode">🌙 Toggle Dark Mode</button>
 
   <div class="filters">
     <label for="type">Type:</label>
@@ -145,15 +83,6 @@
       <option value="mid">Medium (₹₹)</option>
       <option value="high">Fancy (₹₹₹)</option>
     </select>
-
-    <label for="cuisine">Cuisine:</label>
-    <select id="cuisine">
-      <option value="any">Any</option>
-      <option value="indian">Indian</option>
-      <option value="chinese">Chinese</option>
-      <option value="italian">Italian</option>
-      <option value="mexican">Mexican</option>
-    </select>
   </div>
 
   <div class="buttons">
@@ -162,150 +91,129 @@
     <button onclick="skipDish()">⏭️ Skip</button>
   </div>
 
-  <!-- Food Image and Suggestions -->
-  <div class="food-image-container">
-    <img src="" alt="Dish" class="food-image" id="foodImage">
-  </div>
-
   <div class="result" id="suggestion">Ready to find your meal? 😋</div>
+  <img id="foodImage" src="" alt="Food Image" />
+  <div class="recipe" id="recipeText"></div>
   <div class="liked" id="likedDishes"></div>
-  <button class="recipe-button" id="recipeButton" style="display: none;" onclick="showRecipe()">🍴 Show Recipe</button>
 
   <script>
     const foodData = [
-  {
-    name: 'Paneer Butter Masala',
-    type: 'veg',
-    budget: 'mid',
-    cuisine: 'indian',
-    image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/paneer-butter-masala-recipe.jpg',
-    recipe: 'Paneer Butter Masala is a creamy curry made with paneer and rich tomato-based sauce.'
-  },
-  {
-    name: 'Chicken Biryani',
-    type: 'nonveg',
-    budget: 'mid',
-    cuisine: 'indian',
-    image: 'https://www.cubesnjuliennes.com/wp-content/uploads/2020/12/Hyderabadi-Chicken-Biryani-Recipe.jpg',
-    recipe: 'A fragrant rice dish made with marinated chicken and spices.'
-  },
-  {
-    name: 'Maggi',
-    type: 'veg',
-    budget: 'low',
-    cuisine: 'indian',
-    image: 'https://www.cookwithmanali.com/wp-content/uploads/2020/06/Masala-Maggi-500x375.jpg',
-    recipe: 'Instant noodles made with veggies and seasoning.'
-  },
-  {
-    name: 'Grilled Sandwich',
-    type: 'veg',
-    budget: 'low',
-    cuisine: 'italian',
-    image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2022/05/grilled-sandwich-recipe.jpg',
-    recipe: 'A toasted sandwich filled with cheese and vegetables.'
-  },
-  {
-    name: 'Shawarma Roll',
-    type: 'nonveg',
-    budget: 'low',
-    cuisine: 'mexican',
-    image: 'https://i.ytimg.com/vi/XgN7VGqL-Yg/maxresdefault.jpg',
-    recipe: 'Shawarma meat wrapped in a flatbread with vegetables and sauce.'
-  },
-  {
-    name: 'Pizza',
-    type: 'veg',
-    budget: 'high',
-    cuisine: 'italian',
-    image: 'https://static.toiimg.com/thumb/53110049.cms?imgsize=275030&width=800&height=800',
-    recipe: 'A round bread base topped with cheese, tomato sauce, and various toppings.'
-  },
-  {
-    name: 'Mutton Rogan Josh',
-    type: 'nonveg',
-    budget: 'high',
-    cuisine: 'indian',
-    image: 'https://www.cookwithmanali.com/wp-content/uploads/2017/07/Lamb-Rogan-Josh.jpg',
-    recipe: 'A flavorful mutton curry cooked in a spicy and aromatic gravy.'
-  },
-  {
-    name: 'Idli Sambar',
-    type: 'veg',
-    budget: 'low',
-    cuisine: 'indian',
-    image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/09/idli-sambar-recipe.jpg',
-    recipe: 'Steamed rice cakes served with a spicy lentil soup.'
-  },
-  {
-    name: 'Fried Rice',
-    type: 'veg',
-    budget: 'mid',
-    cuisine: 'chinese',
-    image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/veg-fried-rice-recipe.jpg',
-    recipe: 'Stir-fried rice with vegetables and soy sauce.'
-  },
-  {
-    name: 'Fish Curry',
-    type: 'nonveg',
-    budget: 'mid',
-    cuisine: 'indian',
-    image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2022/08/fish-curry.jpg',
-    recipe: 'A spicy and tangy curry made with fish and spices.'
-  }
-];
-
+      {
+        name: 'Paneer Butter Masala',
+        type: 'veg',
+        budget: 'mid',
+        image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/paneer-butter-masala-recipe.jpg',
+        recipe: 'Creamy curry made with paneer, tomatoes, and spices.'
+      },
+      {
+        name: 'Chicken Biryani',
+        type: 'nonveg',
+        budget: 'mid',
+        image: 'https://www.cubesnjuliennes.com/wp-content/uploads/2020/12/Hyderabadi-Chicken-Biryani-Recipe.jpg',
+        recipe: 'Fragrant rice layered with spicy chicken masala.'
+      },
+      {
+        name: 'Maggi',
+        type: 'veg',
+        budget: 'low',
+        image: 'https://www.cookwithmanali.com/wp-content/uploads/2020/06/Masala-Maggi-500x375.jpg',
+        recipe: 'Instant noodles tossed with vegetables and spices.'
+      },
+      {
+        name: 'Grilled Sandwich',
+        type: 'veg',
+        budget: 'low',
+        image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2022/05/grilled-sandwich-recipe.jpg',
+        recipe: 'Toasted sandwich with veggies and cheese.'
+      },
+      {
+        name: 'Shawarma Roll',
+        type: 'nonveg',
+        budget: 'low',
+        image: 'https://i.ytimg.com/vi/XgN7VGqL-Yg/maxresdefault.jpg',
+        recipe: 'Juicy chicken wrapped in pita bread with sauces.'
+      },
+      {
+        name: 'Pizza',
+        type: 'veg',
+        budget: 'high',
+        image: 'https://static.toiimg.com/thumb/53110049.cms?imgsize=275030&width=800&height=800',
+        recipe: 'Classic cheese pizza topped with your favorites.'
+      },
+      {
+        name: 'Mutton Rogan Josh',
+        type: 'nonveg',
+        budget: 'high',
+        image: 'https://www.cookwithmanali.com/wp-content/uploads/2017/07/Lamb-Rogan-Josh.jpg',
+        recipe: 'Kashmiri-style spicy and aromatic mutton curry.'
+      },
+      {
+        name: 'Idli Sambar',
+        type: 'veg',
+        budget: 'low',
+        image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/09/idli-sambar-recipe.jpg',
+        recipe: 'Soft rice cakes with hot lentil soup.'
+      },
+      {
+        name: 'Fried Rice',
+        type: 'veg',
+        budget: 'mid',
+        image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2021/06/veg-fried-rice-recipe.jpg',
+        recipe: 'Rice stir-fried with vegetables and sauces.'
+      },
+      {
+        name: 'Fish Curry',
+        type: 'nonveg',
+        budget: 'mid',
+        image: 'https://www.indianhealthyrecipes.com/wp-content/uploads/2022/08/fish-curry.jpg',
+        recipe: 'Tangy and spicy fish cooked in coconut-based curry.'
+      }
+    ];
 
     let currentDish = null;
-
-    // Toggle dark mode
-    document.getElementById('toggleMode').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-    });
 
     function suggestFood() {
       const type = document.getElementById('type').value;
       const budget = document.getElementById('budget').value;
-      const cuisine = document.getElementById('cuisine').value;
-      document.getElementById('foodImage').src = currentDish.image;
-      document.getElementById('foodImage').style.display = 'block';
 
       const filtered = foodData.filter(food => {
         return (type === 'any' || food.type === type) &&
-               (budget === 'any' || food.budget === budget) &&
-               (cuisine === 'any' || food.cuisine === cuisine);
+               (budget === 'any' || food.budget === budget);
       });
 
       if (filtered.length === 0) {
         document.getElementById('suggestion').innerText = "No matching food found! 😢";
+        document.getElementById('foodImage').style.display = 'none';
+        document.getElementById('recipeText').innerText = '';
         return;
       }
 
       currentDish = filtered[Math.floor(Math.random() * filtered.length)];
       document.getElementById('suggestion').innerText = `${currentDish.name}`;
       document.getElementById('foodImage').src = currentDish.image;
-      document.getElementById('foodImage').style.opacity = 1;
-      document.getElementById('recipeButton').style.display = 'inline-block';
+      document.getElementById('foodImage').style.display = 'block';
+      document.getElementById('recipeText').innerText = currentDish.recipe;
     }
 
     function likeDish() {
-      if (currentDish) {
-        let likedDishes = localStorage.getItem('likedDishes') || '';
-        likedDishes += `${currentDish.name}\n`;
-        localStorage.setItem('likedDishes', likedDishes);
-        document.getElementById('likedDishes').innerText = `Liked Dishes:\n${likedDishes}`;
-      }
+      if (!currentDish) return;
+      let liked = JSON.parse(localStorage.getItem('likedDishes')) || [];
+      liked.push(currentDish.name);
+      localStorage.setItem('likedDishes', JSON.stringify([...new Set(liked)]));
+      showLiked();
     }
 
     function skipDish() {
-      document.getElementById('foodImage').style.opacity = 0;
-      document.getElementById('suggestion').innerText = "Next meal is on the way... 🍽️";
-      document.getElementById('recipeButton').style.display = 'none';
+      suggestFood();
     }
 
-    function showRecipe() {
-      alert(currentDish.recipe);
+    function showLiked() {
+      let liked = JSON.parse(localStorage.getItem('likedDishes')) || [];
+      document.getElementById('likedDishes').innerText = liked.length ? `Liked: ${liked.join(', ')}` : '';
     }
+
+    // Show liked dishes on load
+    showLiked();
   </script>
 </body>
 </html>

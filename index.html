@@ -54,9 +54,15 @@
     }
 
     /* Food Image & Result */
+    .food-image-container {
+      margin-top: 2rem;
+    }
+
     .food-image {
       width: 100%;
       height: auto;
+      max-width: 500px;
+      margin: 0 auto;
       opacity: 0;
       animation: fadeIn 1s forwards;
     }
@@ -154,16 +160,16 @@
 
   <script>
     const foodData = [
-      { name: 'Paneer Butter Masala', type: 'veg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Paneer+Butter+Masala' },
-      { name: 'Chicken Biryani', type: 'nonveg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Chicken+Biryani' },
-      { name: 'Maggi', type: 'veg', budget: 'low', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Maggi' },
-      { name: 'Grilled Sandwich', type: 'veg', budget: 'low', cuisine: 'italian', image: 'https://via.placeholder.com/500x300.png?text=Grilled+Sandwich' },
-      { name: 'Shawarma Roll', type: 'nonveg', budget: 'low', cuisine: 'mexican', image: 'https://via.placeholder.com/500x300.png?text=Shawarma+Roll' },
-      { name: 'Pizza', type: 'veg', budget: 'high', cuisine: 'italian', image: 'https://via.placeholder.com/500x300.png?text=Pizza' },
-      { name: 'Mutton Rogan Josh', type: 'nonveg', budget: 'high', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Mutton+Rogan+Josh' },
-      { name: 'Idli Sambar', type: 'veg', budget: 'low', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Idli+Sambar' },
-      { name: 'Fried Rice', type: 'veg', budget: 'mid', cuisine: 'chinese', image: 'https://via.placeholder.com/500x300.png?text=Fried+Rice' },
-      { name: 'Fish Curry', type: 'nonveg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Fish+Curry' },
+      { name: 'Paneer Butter Masala', type: 'veg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Paneer+Butter+Masala', recipe: 'Paneer Butter Masala is a creamy curry made with paneer and rich tomato-based sauce.' },
+      { name: 'Chicken Biryani', type: 'nonveg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Chicken+Biryani', recipe: 'A fragrant rice dish made with marinated chicken and spices.' },
+      { name: 'Maggi', type: 'veg', budget: 'low', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Maggi', recipe: 'Instant noodles made with veggies and seasoning.' },
+      { name: 'Grilled Sandwich', type: 'veg', budget: 'low', cuisine: 'italian', image: 'https://via.placeholder.com/500x300.png?text=Grilled+Sandwich', recipe: 'A toasted sandwich filled with cheese and vegetables.' },
+      { name: 'Shawarma Roll', type: 'nonveg', budget: 'low', cuisine: 'mexican', image: 'https://via.placeholder.com/500x300.png?text=Shawarma+Roll', recipe: 'Shawarma meat wrapped in a flatbread with vegetables and sauce.' },
+      { name: 'Pizza', type: 'veg', budget: 'high', cuisine: 'italian', image: 'https://via.placeholder.com/500x300.png?text=Pizza', recipe: 'A round bread base topped with cheese, tomato sauce, and various toppings.' },
+      { name: 'Mutton Rogan Josh', type: 'nonveg', budget: 'high', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Mutton+Rogan+Josh', recipe: 'A flavorful mutton curry cooked in a spicy and aromatic gravy.' },
+      { name: 'Idli Sambar', type: 'veg', budget: 'low', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Idli+Sambar', recipe: 'Steamed rice cakes served with a spicy lentil soup.' },
+      { name: 'Fried Rice', type: 'veg', budget: 'mid', cuisine: 'chinese', image: 'https://via.placeholder.com/500x300.png?text=Fried+Rice', recipe: 'Stir-fried rice with vegetables and soy sauce.' },
+      { name: 'Fish Curry', type: 'nonveg', budget: 'mid', cuisine: 'indian', image: 'https://via.placeholder.com/500x300.png?text=Fish+Curry', recipe: 'A spicy and tangy curry made with fish and spices.' },
     ];
 
     let currentDish = null;
@@ -214,7 +220,9 @@
     }
 
     function showRecipe() {
-      alert("Recipe for " + currentDish.name + " will be displayed here!");
+      if (currentDish) {
+        alert(currentDish.recipe);
+      }
     }
 
     // Show liked dishes on load
